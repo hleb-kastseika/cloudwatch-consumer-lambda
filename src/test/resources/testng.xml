@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="full">
+    <test name="lambda-unit-tests">
+        <packages>
+            <package name="gk.logconsumer"/>
+        </packages>
+    </test>
+</suite>

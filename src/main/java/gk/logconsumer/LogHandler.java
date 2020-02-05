@@ -5,6 +5,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import gk.logconsumer.model.CloudWatchLogEvent;
 import gk.logconsumer.model.CloudWatchPutRequest;
 import gk.logconsumer.model.LambdaResponse;
+
 import java.util.logging.Logger;
 
 public class LogHandler implements RequestHandler<CloudWatchPutRequest, LambdaResponse> {
