@@ -1,16 +1,10 @@
 package gk.logconsumer.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class AWSLogs {
     private String data;
-
-    public AWSLogs() {
-    }
-
-    public String getData() {
-        return data;
-    }
-
-    public void setData(String data) {
-        this.data = data;
-    }
 }

@@ -1,16 +1,10 @@
 package gk.logconsumer.model;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 public class CloudWatchPutRequest {
     private AWSLogs awslogs;
-
-    public CloudWatchPutRequest() {
-    }
-
-    public AWSLogs getAwslogs() {
-        return awslogs;
-    }
-
-    public void setAwslogs(AWSLogs awslogs) {
-        this.awslogs = awslogs;
-    }
 }
