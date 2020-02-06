@@ -25,6 +25,7 @@ public class LogHandler implements RequestHandler<CloudWatchPutRequest, LambdaRe
 
         //TODO add retrying for failed uploads
         boolean isSuccess = esService.uploadLogs(logEvents);
+
         return new LambdaResponse(); //TODO possibly remove it at all
     }
 }

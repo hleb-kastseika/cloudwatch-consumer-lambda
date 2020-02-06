@@ -2,7 +2,6 @@ package gk.logconsumer;
 
 import gk.logconsumer.model.CloudWatchLogEvents;
 import gk.logconsumer.model.ESLogRecord;
-import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -29,7 +28,8 @@ public class ElasticSearchService {
     public Boolean uploadLogs(CloudWatchLogEvents logEvents) {
         try {
             //TODO process each document in the response to make sure that uploaded successfully
-            HttpResponse response = client.execute(prepareHttpPost(logEvents));
+            var response = client.execute(prepareHttpPost(logEvents));
+
             return response.getStatusLine().getStatusCode() == 200;
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -37,7 +37,7 @@ public class ElasticSearchService {
     }
 
     private HttpPost prepareHttpPost(CloudWatchLogEvents logEvents) throws UnsupportedEncodingException {
-        HttpPost httpPost = new HttpPost(esBulkUrl);
+        var httpPost = new HttpPost(esBulkUrl);
         httpPost.setHeader("Content-Type", "application/json");
         httpPost.setEntity(new StringEntity(prepareRequestBody(logEvents)));
         return httpPost;
@@ -54,11 +54,11 @@ public class ElasticSearchService {
                         .logStream(logEvents.getLogStream())
                         .owner(logEvents.getOwner())
                         .build())
-                .map(this::toJsonPayload)
+                .map(this::getJsonPayload)
                 .collect(Collectors.joining());
     }
 
-    private String toJsonPayload(ESLogRecord esRecord) {
+    private String getJsonPayload(ESLogRecord esRecord) {
         return new StringBuilder()
                 .append("{\"index\":{\"_id\":\"")
                 .append(esRecord.getId())
