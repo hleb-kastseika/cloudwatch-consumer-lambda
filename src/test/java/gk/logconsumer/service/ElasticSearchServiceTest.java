@@ -1,7 +1,8 @@
-package gk.logconsumer;
+package gk.logconsumer.service;
 
 import gk.logconsumer.model.CloudWatchLogEvent;
 import gk.logconsumer.model.CloudWatchLogEvents;
+import gk.logconsumer.service.ElasticSearchService;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;

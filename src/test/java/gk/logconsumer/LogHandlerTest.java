@@ -4,6 +4,8 @@ import gk.logconsumer.model.AWSLogs;
 import gk.logconsumer.model.CloudWatchLogEvent;
 import gk.logconsumer.model.CloudWatchLogEvents;
 import gk.logconsumer.model.CloudWatchPutRequest;
+import gk.logconsumer.service.DecoderService;
+import gk.logconsumer.service.ElasticSearchService;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.testng.annotations.BeforeMethod;
@@ -23,7 +25,7 @@ public class LogHandlerTest {
     private CloudWatchLogEvents decodedLogs;
     private CloudWatchPutRequest request;
     @Mock
-    private PayloadDecoder decoder;
+    private DecoderService decoder;
     @Mock
     private ElasticSearchService esService;
     @InjectMocks

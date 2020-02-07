@@ -1,4 +1,4 @@
-package gk.logconsumer;
+package gk.logconsumer.service;
 
 import gk.logconsumer.model.CloudWatchLogEvents;
 import gk.logconsumer.model.ESLogRecord;

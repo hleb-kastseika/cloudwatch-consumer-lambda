@@ -3,17 +3,19 @@ package gk.logconsumer;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import gk.logconsumer.model.CloudWatchPutRequest;
+import gk.logconsumer.service.DecoderService;
+import gk.logconsumer.service.ElasticSearchService;
 
 public class LogHandler implements RequestHandler<CloudWatchPutRequest, Void> {
-    private PayloadDecoder decoder;
+    private DecoderService decoder;
     private ElasticSearchService esService;
 
     public LogHandler() {
-        this.decoder = new PayloadDecoder();
+        this.decoder = new DecoderService();
         this.esService = new ElasticSearchService();
     }
 
-    public LogHandler(PayloadDecoder decoder, ElasticSearchService esService) {
+    public LogHandler(DecoderService decoder, ElasticSearchService esService) {
         this.decoder = decoder;
         this.esService = esService;
     }

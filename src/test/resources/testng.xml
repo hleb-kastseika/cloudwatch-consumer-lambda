@@ -4,6 +4,7 @@
     <test name="lambda-unit-tests">
         <packages>
             <package name="gk.logconsumer"/>
+            <package name="gk.logconsumer.service"/>
         </packages>
     </test>
 </suite>

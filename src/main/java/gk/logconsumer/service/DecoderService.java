@@ -1,4 +1,4 @@
-package gk.logconsumer;
+package gk.logconsumer.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gk.logconsumer.model.CloudWatchLogEvents;
@@ -9,7 +9,7 @@ import java.io.InputStreamReader;
 import java.util.Base64;
 import java.util.zip.GZIPInputStream;
 
-public class PayloadDecoder {
+public class DecoderService {
     private static final ObjectMapper MAPPER = new ObjectMapper();
 
     public CloudWatchLogEvents decode(String base64Encoded) {
