@@ -1,10 +1,9 @@
 package gk.logconsumer;
 
-import gk.logconsumer.model.CloudWatchLogEvents;
-import gk.logconsumer.model.CloudWatchLogEvent;
 import gk.logconsumer.model.AWSLogs;
+import gk.logconsumer.model.CloudWatchLogEvent;
+import gk.logconsumer.model.CloudWatchLogEvents;
 import gk.logconsumer.model.CloudWatchPutRequest;
-import gk.logconsumer.model.LambdaResponse;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.testng.annotations.BeforeMethod;
@@ -17,7 +16,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.MockitoAnnotations.initMocks;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 
 public class LogHandlerTest {
     private static final String ENCODED_CW_EVENT = "H4sIAAAAAAAAADWQzW6DMBCEXwXtGSTjtbHNDak0p57IrYoqp7jUEhiEnf4oyrt3Ic1ptd+MZta+wuRitIM7/i4Oanhqjs3bS9t1zaGFHObv4FbCyhiUKKQwGgmP83BY58tCyminc2+LTxv60YehICneHV1anZ3IEu20jG5TinhnOcTLOb6vfkl+Ds9+TG6NUL8+rB87gdOe0365kDb1Cr6nOJRcolIMuRSqEroURlScFqQbBasMrzjbhlQl00ZzKStCglqTp9cm6oC6lJppRIWSMZY/foHi25/9hoyas3+aIcLtdPsDq47OrCwBAAA=";
@@ -52,9 +51,9 @@ public class LogHandlerTest {
         when(decoder.decode(ENCODED_CW_EVENT)).thenReturn(decodedLogs);
         when(esService.uploadLogs(decodedLogs)).thenReturn(true);
 
-        LambdaResponse response = handler.handleRequest(request, null);
+        var response = handler.handleRequest(request, null);
 
-        assertNotNull(response);
+        assertNull(response);
         verify(decoder).decode(eq(ENCODED_CW_EVENT));
         verify(esService).uploadLogs(eq(decodedLogs));
         verifyNoMoreInteractions(decoder, esService);

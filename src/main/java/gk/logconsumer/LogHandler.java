@@ -3,9 +3,8 @@ package gk.logconsumer;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import gk.logconsumer.model.CloudWatchPutRequest;
-import gk.logconsumer.model.LambdaResponse;
 
-public class LogHandler implements RequestHandler<CloudWatchPutRequest, LambdaResponse> {
+public class LogHandler implements RequestHandler<CloudWatchPutRequest, Void> {
     private PayloadDecoder decoder;
     private ElasticSearchService esService;
 
@@ -20,12 +19,11 @@ public class LogHandler implements RequestHandler<CloudWatchPutRequest, LambdaRe
     }
 
     @Override
-    public LambdaResponse handleRequest(CloudWatchPutRequest request, Context context) {
+    public Void handleRequest(CloudWatchPutRequest request, Context context) {
         var logEvents = decoder.decode(request.getAwslogs().getData());
 
         //TODO add retrying for failed uploads
         boolean isSuccess = esService.uploadLogs(logEvents);
-
-        return new LambdaResponse(); //TODO possibly remove it at all
+        return null;
     }
 }
