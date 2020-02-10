@@ -33,7 +33,7 @@ public class LogHandler implements RequestHandler<CloudWatchPutRequest, Void> {
         }
 
         if (!success) {
-            throw new RuntimeException("");
+            throw new RuntimeException("Couldn't upload data to ElasticSearch.");
         }
         return null;
     }
