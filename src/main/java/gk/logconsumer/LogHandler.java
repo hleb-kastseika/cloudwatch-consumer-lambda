@@ -7,6 +7,7 @@ import gk.logconsumer.service.DecoderService;
 import gk.logconsumer.service.ElasticSearchService;
 
 public class LogHandler implements RequestHandler<CloudWatchPutRequest, Void> {
+    private static final int MAX_ES_TRIES = 3;
     private DecoderService decoder;
     private ElasticSearchService esService;
 
@@ -24,8 +25,16 @@ public class LogHandler implements RequestHandler<CloudWatchPutRequest, Void> {
     public Void handleRequest(CloudWatchPutRequest request, Context context) {
         var logEvents = decoder.decode(request.getAwslogs().getData());
 
-        //TODO add retrying for failed uploads
-        boolean isSuccess = esService.uploadLogs(logEvents);
+        var success = false;
+        var attempt = 0;
+        while (!success && attempt < MAX_ES_TRIES) {
+            success = esService.uploadLogs(logEvents);
+            attempt++;
+        }
+
+        if (!success) {
+            throw new RuntimeException("");
+        }
         return null;
     }
 }
