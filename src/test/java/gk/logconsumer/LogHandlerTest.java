@@ -14,9 +14,7 @@ import org.testng.annotations.Test;
 import java.util.List;
 
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.testng.Assert.assertNull;
 
@@ -59,5 +57,13 @@ public class LogHandlerTest {
         verify(decoder).decode(eq(ENCODED_CW_EVENT));
         verify(esService).uploadLogs(eq(decodedLogs));
         verifyNoMoreInteractions(decoder, esService);
+    }
+
+    @Test(expectedExceptions = {RuntimeException.class})
+    public void testUploadDataError() {
+        when(decoder.decode(ENCODED_CW_EVENT)).thenReturn(decodedLogs);
+        when(esService.uploadLogs(decodedLogs)).thenReturn(false);
+
+        handler.handleRequest(request, null);
     }
 }
