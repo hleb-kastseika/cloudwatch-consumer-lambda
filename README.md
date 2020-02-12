@@ -18,10 +18,10 @@ mvn package
 ### How to create infrastructure for Lambda function in AWS:
  ```
 terraform init
-terraform apply
+terraform apply -var="ES_INDEX_URL=%ES_INDEX_URL_VALUE%"
 ```
 
 ### How to invoke Lambda function with AWS CLI:
  ```
-aws logs put-log-events --log-group-name %NAME_OF_CLOUDWATCH_LOGGROUP% --log-stream-name %NAME_OF_CLOUDWATCH_LOGSTREAM% --log-events timestamp=1580833735000,message="Test Cloudwatch message" --sequence-token %SEQUENCE_TOKEN%
+aws logs put-log-events --log-group-name %NAME_OF_CLOUDWATCH_LOGGROUP_VALUE% --log-stream-name %NAME_OF_CLOUDWATCH_LOGSTREAM_VALUE% --log-events timestamp=1580833735000,message="Test Cloudwatch message" --sequence-token %SEQUENCE_TOKEN_VALUE%
 ```
