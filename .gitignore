@@ -11,3 +11,8 @@ target/
 .settings/
 .project
 .classpath
+
+# Terraform files
+.terraform/
+terraform.tfstate.backup
+terraform.tfstate
