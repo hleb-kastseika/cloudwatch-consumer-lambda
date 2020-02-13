@@ -3,12 +3,11 @@ provider "aws" {
   region = "us-east-1"
 }
 
-data "aws_iam_policy_document" "lambda_cloudwatch_logs" {
+data "aws_iam_policy_document" "lambda_cloudwatch_logs_document" {
   statement {
     actions = [
       "sts:AssumeRole"
     ]
-
     principals {
       type = "Service"
       identifiers = [
@@ -18,22 +17,11 @@ data "aws_iam_policy_document" "lambda_cloudwatch_logs" {
   }
 }
 
-data "aws_iam_policy_document" "lambda_cloudwatch_logs_policy" {
+data "aws_iam_policy_document" "lambda_cloudwatch_logs_policy_document" {
   statement {
     actions = [
       "logs:*"
     ]
-
-    resources = [
-      "*"
-    ]
-  }
-
-  statement {
-    actions = [
-      "logs:CreateLogGroup"
-    ]
-
     resources = [
       "*"
     ]
@@ -42,13 +30,13 @@ data "aws_iam_policy_document" "lambda_cloudwatch_logs_policy" {
 
 resource "aws_iam_role" "lambda_cloudwatch_logs" {
   name = "lambda_cloudwatch_logs"
-  assume_role_policy = data.aws_iam_policy_document.lambda_cloudwatch_logs.json
+  assume_role_policy = data.aws_iam_policy_document.lambda_cloudwatch_logs_document.json
 }
 
-resource "aws_iam_role_policy" "lambda_cloudwatch_logs_polcy" {
-  name = "lambda_cloudwatch_logs_polcy"
+resource "aws_iam_role_policy" "lambda_cloudwatch_logs_policy" {
+  name = "lambda_cloudwatch_logs_policy"
   role = aws_iam_role.lambda_cloudwatch_logs.id
-  policy = data.aws_iam_policy_document.lambda_cloudwatch_logs_policy.json
+  policy = data.aws_iam_policy_document.lambda_cloudwatch_logs_policy_document.json
 }
 
 resource "aws_lambda_function" "cloudwatch_log_consumer_lambda" {
@@ -66,7 +54,25 @@ resource "aws_lambda_function" "cloudwatch_log_consumer_lambda" {
   source_code_hash = filesha256("target/cloudwatch-log-consumer-0.0.1-SNAPSHOT.jar")
   environment {
     variables = {
-      ES_INDEX_URL = var.elaticseatch_url
+      ES_INDEX_URL = "https://search-cloudwatch-log-storage-lsy4kiurrnaubum73ofdijgu5a.us-east-1.es.amazonaws.com/cloudwatch-logs/"
     }
   }
+}
+
+resource "aws_lambda_permission" "cloudwatch_access_permission" {
+  statement_id = "AllowExecutionFromCloudWatch"
+  action = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.cloudwatch_log_consumer_lambda.function_name
+  principal = "logs.amazonaws.com"
+}
+
+resource "aws_cloudwatch_log_subscription_filter" "cloudwatch_log_subscription" {
+  depends_on = [
+    "aws_lambda_permission.cloudwatch_access_permission"
+  ]
+  name = "cloudwatch_log_subscription"
+  log_group_name = "lambda-handling-logs"
+  filter_pattern = ""
+  destination_arn = aws_lambda_function.cloudwatch_log_consumer_lambda.arn
+  distribution = "Random"
 }
