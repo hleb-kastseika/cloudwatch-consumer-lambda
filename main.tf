@@ -54,7 +54,7 @@ resource "aws_lambda_function" "cloudwatch_log_consumer_lambda" {
   source_code_hash = filesha256("target/cloudwatch-log-consumer-0.0.1-SNAPSHOT.jar")
   environment {
     variables = {
-      ES_INDEX_URL = "https://search-cloudwatch-log-storage-lsy4kiurrnaubum73ofdijgu5a.us-east-1.es.amazonaws.com/cloudwatch-logs/"
+      ES_INDEX_URL = var.elaticseatch_url
     }
   }
 }
