@@ -16,12 +16,18 @@ mvn package
 ```
 
 ### How to create infrastructure for Lambda function in AWS:
+
+1. Populate properties in `terraform.tfvars` file
+
+2. Execute in Terminal:
  ```
 terraform init
-terraform apply -var="ES_INDEX_URL=%ES_INDEX_URL_VALUE%"
+terraform apply
 ```
 
 ### How to create ElasticSearch index for log records:
+
+Make next REST call using instead of %ES_INDEX_URL_VALUE% placeholder the value which you used in the previous step for ES URL.
  ```
 PUT %ES_INDEX_URL_VALUE%/cloudwatch-logs
 
@@ -57,6 +63,9 @@ PUT %ES_INDEX_URL_VALUE%/cloudwatch-logs
 ```
 
 ### How to invoke Lambda function with AWS CLI:
+
+Execute in Terminal next command using instead placeholders %CLOUDWATCH_LOGGROUP_NAME_VALUE% and %CLOUDWATCH_LOGSTREAM_NAME_VALUE% values which you used in the step with `terraform.tfvars` file.
+For %SEQUENCE_TOKEN_VALUE% placeholder use value which will be provided by AWS CLI. 
  ```
-aws logs put-log-events --log-group-name %NAME_OF_CLOUDWATCH_LOGGROUP_VALUE% --log-stream-name %NAME_OF_CLOUDWATCH_LOGSTREAM_VALUE% --log-events timestamp=1580833735000,message="Test Cloudwatch message" --sequence-token %SEQUENCE_TOKEN_VALUE%
+aws logs put-log-events --log-group-name %CLOUDWATCH_LOGGROUP_NAME_VALUE% --log-stream-name %CLOUDWATCH_LOGSTREAM_NAME_VALUE% --log-events timestamp=1580833735000,message="Test Cloudwatch message" --sequence-token %SEQUENCE_TOKEN_VALUE%
 ```

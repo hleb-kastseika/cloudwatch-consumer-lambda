@@ -3,6 +3,10 @@ provider "aws" {
   region = "us-east-1"
 }
 
+variable elasticsearch_url {}
+variable cloudwatch_log_group_name {}
+variable cloudwatch_log_stream_name {}
+
 data "aws_iam_policy_document" "lambda_cloudwatch_logs_document" {
   statement {
     actions = [
@@ -54,9 +58,19 @@ resource "aws_lambda_function" "cloudwatch_log_consumer_lambda" {
   source_code_hash = filesha256("target/cloudwatch-log-consumer-0.0.1-SNAPSHOT.jar")
   environment {
     variables = {
-      ES_INDEX_URL = var.elaticseatch_url
+      ES_INDEX_URL = var.elasticsearch_url
     }
   }
+}
+
+resource "aws_cloudwatch_log_group" "lambda_cloudwatch_log_group" {
+  name = var.cloudwatch_log_group_name
+  retention_in_days = 14
+}
+
+resource "aws_cloudwatch_log_stream" "lambda_cloudwatch_log_stream" {
+  name = var.cloudwatch_log_stream_name
+  log_group_name = aws_cloudwatch_log_group.lambda_cloudwatch_log_group.name
 }
 
 resource "aws_lambda_permission" "cloudwatch_access_permission" {
@@ -68,10 +82,10 @@ resource "aws_lambda_permission" "cloudwatch_access_permission" {
 
 resource "aws_cloudwatch_log_subscription_filter" "cloudwatch_log_subscription" {
   depends_on = [
-    "aws_lambda_permission.cloudwatch_access_permission"
+    aws_lambda_permission.cloudwatch_access_permission
   ]
   name = "cloudwatch_log_subscription"
-  log_group_name = "lambda-handling-logs"
+  log_group_name = aws_cloudwatch_log_group.lambda_cloudwatch_log_group.name
   filter_pattern = ""
   destination_arn = aws_lambda_function.cloudwatch_log_consumer_lambda.arn
   distribution = "Random"
