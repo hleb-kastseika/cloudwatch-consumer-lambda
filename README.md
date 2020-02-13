@@ -2,7 +2,7 @@
 
 # cloudwatch-consumer-lambda
 
-That AWS Lambda function listen CloudWatch log group(s) for new logs and transfer them to ElasticSearch.
+That AWS Lambda function to listen CloudWatch log group(s) for new logs and to transmit them to ElasticSearch.
 
 ### Requirements:
  - Java 11
