@@ -16,9 +16,17 @@ mvn package
 ```
 
 ### How to create infrastructure for Lambda function in AWS:
-
+Currently `main.tf` file describes next resources:
+ - IAM role with policies for Lambda function which allow access to CloudWatch logs
+ - Lambda function which handle CW logs and send them to ElasticSearch
+ - CloudWatch log group and CloudWatch log stream on which mentioned lambda function is subscribed
+ - Lambda permission for invocation of the function by logs
+ - Subscription filter that specifies which CW log group should be tracked by the function
+ 
+**Current Terraform template don't specify ElasticSearch cluster and you need to configure and to use it by you own.** 
+ 
+Steps to create infrastructure:
 1. Populate properties in `terraform.tfvars` file
-
 2. Execute in Terminal:
  ```
 terraform init
