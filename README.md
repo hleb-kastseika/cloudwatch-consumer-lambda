@@ -1,4 +1,5 @@
 ![cloudwatch-consumer-lambda CI job](https://github.com/gleb-kosteiko/cloudwatch-consumer-lambda/workflows/cloudwatch-consumer-lambda%20CI%20job/badge.svg)
+[![codecov](https://codecov.io/gh/gleb-kosteiko/defpub-rest-service/branch/master/graph/badge.svg)](https://codecov.io/gh/gleb-kosteiko/defpub-rest-service)
 
 # cloudwatch-consumer-lambda
 
