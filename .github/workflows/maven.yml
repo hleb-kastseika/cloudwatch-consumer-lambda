@@ -4,9 +4,7 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up JDK 1.8
@@ -14,4 +12,8 @@ jobs:
       with:
         java-version: 11
     - name: Build far Jar-file with Maven
-      run: mvn clean package && bash <(curl -s https://codecov.io/bash)
+      run: mvn clean package
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1.0.3
+      with:
+        token: ${{secrets.CODECOV_TOKEN}}
