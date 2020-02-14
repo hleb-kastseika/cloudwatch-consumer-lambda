@@ -14,4 +14,4 @@ jobs:
       with:
         java-version: 11
     - name: Build far Jar-file with Maven
-      run: mvn clean package
+      run: mvn clean package && bash <(curl -s https://codecov.io/bash)
