@@ -16,3 +16,4 @@ target/
 .terraform/
 terraform.tfstate.backup
 terraform.tfstate
+terraform.tfvars
