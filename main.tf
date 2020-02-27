@@ -96,5 +96,4 @@ resource "aws_cloudwatch_log_subscription_filter" "cloudwatch_log_subscription" 
   log_group_name = aws_cloudwatch_log_group.lambda_cloudwatch_log_group.name
   filter_pattern = ""
   destination_arn = aws_lambda_function.cloudwatch_log_consumer_lambda.arn
-  distribution = "Random"
 }
